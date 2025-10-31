@@ -1,7 +1,7 @@
 export const Container = ({ children }) => {
     return (
-    <div className="container mx-auto py-5">
-        <a href="/private/product" className="bg-neutral-950 text-neutral-50 p-3 rounded shadow cursor-pointer font-bold hover:bg-green-600 mb-10 inline-block text-center" >Cargar Producto</a>
+    <div className=" flex flex-col container mx-auto py-1">
+        <a href="/private/product" className="w-37 mb-1 mt-1 bg-neutral-950 text-neutral-50 p-3 rounded cursor-pointer font-bold hover:bg-green-800" >Cargar Producto</a>
         {children}
     </div>
     )

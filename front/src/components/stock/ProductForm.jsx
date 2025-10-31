@@ -103,13 +103,9 @@ export const ProductForm = () => {
     }
 
     return (
-        <div className='mt-5 p-5 gap-5 flex flex-col justify-center items-center'>
-            <a href="/">Principal</a>
+        <div className='mt-5 p-5 gap-5 flex flex-col justify-center items-center bg-white max-w-md mx-auto rounded'>
             <h2 className='text-4xl font-bold'>Producto</h2>
-            <form
-                    className="flex flex-col gap-2"
-                    onSubmit={handleSubmit}
-                >
+            <form className="flex flex-col gap-2 bg-white" onSubmit={handleSubmit}>
                 <Input
                     type="text"
                     name="Nombre_Producto"
@@ -137,11 +133,12 @@ export const ProductForm = () => {
                         setStock(e.target.value)
                     }}
                 />
-                <button className="p-2 mt-5 border[1px] bg-slate-950 text-slate-100 font-black rounded hover:bg-green-600"> {
+                <button className="p-2 mt-5 cursor-pointer border[1px] bg-slate-950 text-slate-100 font-black rounded hover:bg-green-800"> {
                         id !== "" ? "Actualizar" : "Cargar"
                     }
                 </button>
             </form>
+            <a href="/" className=' bg-neutral-950 text-neutral-50 p-3 rounded cursor-pointer font-bold hover:bg-sky-800'>Menu principal</a>
         </div>
     )
 }

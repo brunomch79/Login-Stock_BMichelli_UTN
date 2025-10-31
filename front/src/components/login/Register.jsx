@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { toast } from "react-toastify"
 
 const Legend = () => {
-    return <p>Ya tiene cuenta? <Link to="/" className='underline text-sky-800'>Inicia Sesion</Link></p>
+    return <p>Ya tienes cuenta? <Link to="/" className='text-sky-800'>Inicia Sesion</Link></p>
 }
 
 const Register = () => {
@@ -56,7 +56,7 @@ const Register = () => {
                 type="text"
                 id="fullname"
                 title="Nombre completo"
-                placeholder="Joe Doe"
+                placeholder="Nombre completo"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
             />
@@ -71,8 +71,8 @@ const Register = () => {
             <Input
                 type="password"
                 name="Password"
-                title="Contrasena"
-                placeholder="Patito123"
+                title="Contraseña"
+                placeholder="Contraseña"
                 value={password}
                 id="password"
                 onChange={(e) => setPassword(e.target.value)}
@@ -81,12 +81,12 @@ const Register = () => {
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"
-                title="Confirmar Contrasena"
-                placeholder="Patito123"
+                title="Confirmar Contraseña"
+                placeholder="Confirmar Contraseña"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <Button type='submit' value={`${loading ? "Cargando..." : "Registrase"}`} />
+            <Button type='submit' value={`${loading ? "Cargando..." : "Registrarse"}`} />
         </Form>)
 }
 

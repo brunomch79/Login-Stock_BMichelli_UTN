@@ -11,7 +11,7 @@ function Private() {
         }
     }, [user])
     return (
-        <div>
+        <div className="p-1 min-h-screen bg-linear-to-r from-[#3c0404] to-[#02023e]">
             <button onClick={
                 async () => {
                     setUser({
@@ -20,7 +20,7 @@ function Private() {
                         token: null
                     })
                 }       
-            } className="p-1 border[1px] bg-black text-white text-xl rounded ">Cerrar Sesion</button>
+            } className="w-32 bg-neutral-950 text-neutral-50 p-3 rounded cursor-pointer font-bold hover:bg-red-800">Cerrar Sesion</button>
             <Outlet />
         </div>
     )

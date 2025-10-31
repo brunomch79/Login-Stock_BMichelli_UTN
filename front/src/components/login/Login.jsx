@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { useStore } from '../../store/useStore'
 
 const Legend = () => {
-    return <p>No tiene cuenta? <Link to="/register" className="underline text-sky-800" >Registrate</Link></p>
+    return <p>No tienes cuenta? <Link to="/register" className="text-sky-800" >Regístrate</Link></p>
 }
 
 const Login = () => {
@@ -48,7 +48,7 @@ const Login = () => {
                 id="email"
                 name="email"
                 title="Email"
-                placeholder="patito@patito.com"
+                placeholder="correo@correo.com"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value) }}
             />
@@ -56,8 +56,8 @@ const Login = () => {
                 type="password"
                 id="password"
                 name="password"
-                placeholder="Contrasenia"
-                title="Contrasena"
+                placeholder="Contraseña"
+                title="Contraseña"
                 value={password}
                 onChange={(e) => { setPassword(e.target.value) }}
             />

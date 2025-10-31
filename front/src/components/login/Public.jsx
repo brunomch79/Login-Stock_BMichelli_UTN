@@ -30,7 +30,7 @@ const Public = () => {
         verifyUser()
     }, [user])
     return (
-        <div className="mx-auto flex flex-col items-center justify-center min-h-screen">
+        <div className="mx-auto flex flex-col items-center justify-center min-h-screen bg-linear-to-r from-[#3c0404] to-[#02023e]">
             <Outlet />
         </div>
     )
