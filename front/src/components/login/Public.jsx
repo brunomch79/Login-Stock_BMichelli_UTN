@@ -7,7 +7,7 @@ const Public = () => {
     const navigate = useNavigate()
     useEffect(() => {
         async function verifyUser() {
-            const url = `${import.meta.env.VITE_API_URL}/verify-token`
+            const url = `${import.meta.env.VITE_API_URL}/user/verify-token`
             const config = {
                 method: "GET",
                 headers: {

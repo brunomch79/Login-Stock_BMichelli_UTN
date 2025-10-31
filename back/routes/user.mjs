@@ -13,7 +13,7 @@ userRoutes.get("/", async (req, res) => {
     })
 })
 
-userRoutes.post("/", async (req, res) => {
+userRoutes.post("/register", async (req, res) => {
     const body = req.body
     try {
         const { fullName, email, password, confirmPassword } = body

@@ -7,7 +7,7 @@ export const ProductList = () => {
     const [data, setData] = useState([])
     useEffect(() => {
         const getProduct = async () => {
-            const req = await fetch('http://localhost:3000', {
+            const req = await fetch('http://localhost:3000/product', {
                 headers: {
                     'content-type': 'application/json',
                 accept: 'application/json'
@@ -30,7 +30,7 @@ export const ProductList = () => {
         return
     }
     try {
-        const url = `http://localhost:3000/?id=${id}`
+        const url = `http://localhost:3000/product/${id}`
         const config = {
             method: 'DELETE',
             headers: {

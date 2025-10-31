@@ -14,7 +14,7 @@ export const ProductForm = () => {
         const getProduct = async () => {
             try {
                 if (id === "") return
-                const url = `http://localhost:3000/product?id=${params.id}`
+                const url = `http://localhost:3000/product/${params.id}`
                 const config = {
                     method: "GET",
                     headers: {
@@ -27,6 +27,7 @@ export const ProductForm = () => {
                     throw new Error(res.msg)
                     return
                 }
+                console.log(res.product)
         setName(res.product.name)
         setPrice(res.product.price)
         setStock(res.product.stock)
@@ -51,7 +52,7 @@ export const ProductForm = () => {
                     stock: stock
                 })
             }
-            const url = `http://localhost:3000/?id=${id}`
+            const url = `http://localhost:3000/product/${id}`
             const req = await fetch(url, config)
             const res = await req.json()
             if (res.error) {
@@ -84,7 +85,7 @@ export const ProductForm = () => {
                     stock: stock
                 })
             }
-            const url = "http://localhost:3000/"
+            const url = "http://localhost:3000/product"
             const req = await fetch(url, config)
             const res = await req.json()
             if (res.error) {

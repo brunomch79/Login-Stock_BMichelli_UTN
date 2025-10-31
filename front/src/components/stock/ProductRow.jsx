@@ -8,7 +8,7 @@ export const ProductRow = ({ data, onDelete }) => {
                 <button className="p-1 bg-neutral-950 text-neutral-50 rounded m-1 cursor-pointer hover:bg-red-600 shadow "
                     onClick={() => onDelete(data.id)}>Borrar</button>
                 <a className="p-1 bg-neutral-950 text-neutral-50 rounded m-1 cursor-pointer hover:bg-sky-700 inline-block"
-                    href={`/product/${data.id}`}>Editar</a>
+                    href={`/private/product/${data.id}`}>Editar</a>
             </section>
         </div>
     )

@@ -36,7 +36,7 @@ productRoutes.get("/:id", async (req, res) => {
     try {
         const product = await Product.findByPk(req.params.id)
         if (!product) return res.status(404).json({ error: true, msg: "Producto no encontrado" })
-        res.json({ error: false, data: product });
+        res.json({ error: false, product });
     } catch {
         res.status(500).json({ error: true, msg: "Error al obtener el producto" })
     }
