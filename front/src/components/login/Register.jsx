@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { toast } from "react-toastify"
 
 const Legend = () => {
-    return <p>Ya tienes cuenta? <Link to="/" className='text-sky-800'>Inicia Sesion</Link></p>
+    return <p>¿Ya tienes una cuenta? <Link to="/" className='text-sky-800'>Inicia Sesion</Link></p>
 }
 
 const Register = () => {
@@ -56,7 +56,7 @@ const Register = () => {
                 type="text"
                 id="fullname"
                 title="Nombre completo"
-                placeholder="Nombre completo"
+                placeholder="Nombre Completo"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
             />

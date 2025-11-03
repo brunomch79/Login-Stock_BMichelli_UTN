@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { useStore } from '../../store/useStore'
 
 const Legend = () => {
-    return <p>No tienes cuenta? <Link to="/register" className="text-sky-800" >Regístrate</Link></p>
+    return <p>¿No tienes una cuenta? <Link to="/register" className="text-sky-800" >Regístrate</Link></p>
 }
 
 const Login = () => {
