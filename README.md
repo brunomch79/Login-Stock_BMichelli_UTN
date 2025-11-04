@@ -42,8 +42,8 @@ Entradas (JSON body):
 }
 ```
 Validaciones:
-password y confirmPassword deben coincidir.
-email debe ser único en la base de datos.
+- password y confirmPassword deben coincidir.
+- email debe ser único en la base de datos.
 
 Salidas:
 ```js
@@ -58,8 +58,7 @@ Salidas:
 ```
 
 ## 2. **POST** (`/user/login`)
-Descripción:
-Verifica las credenciales del usuario y devuelve sus datos junto a un token de autenticación.
+Descripción: Verifica las credenciales del usuario y devuelve sus datos junto a un token de autenticación.
 
 Entradas (JSON body):
 ```js
@@ -69,9 +68,9 @@ Entradas (JSON body):
 }
 ```
 Proceso interno:
-Busca al usuario en la base de datos.
-Compara la contraseña con el hash guardado (bcrypt).
-Genera un token JWT si es válido.
+- Busca al usuario en la base de datos.
+- Compara la contraseña con el hash guardado (bcrypt).
+- Genera un token JWT si es válido.
 
 Salidas:
 ```js
@@ -169,11 +168,11 @@ dotenv.config()	//Carga variables de entorno desde .env.
 ## Frontend (React + Zustand)
 Flujo General:
 
-El usuario completa el formulario de Registro o Login.
-El componente envía la información mediante fetch al backend.
-Si la respuesta es exitosa, se muestra un mensaje con react-toastify.
-En el login, los datos del usuario se guardan en el estado global con Zustand.
-La sesión persiste aunque se recargue la página.
+- El usuario completa el formulario de Registro o Login.
+- El componente envía la información mediante fetch al backend.
+- Si la respuesta es exitosa, se muestra un mensaje con react-toastify.
+- En el login, los datos del usuario se guardan en el estado global con Zustand.
+- La sesión persiste aunque se recargue la página.
 
 ## Componentes principales
 ```js
@@ -200,8 +199,8 @@ Estructura del estado:
 ```
 
 Funciones principales:
-. setUser(newUser) → Actualiza el usuario en sesión.
-. Persistencia automática en localStorage bajo el nombre "token_login_web".
+- setUser(newUser) → Actualiza el usuario en sesión.
+- Persistencia automática en localStorage bajo el nombre "token_login_web".
 
 ## Variables de Entorno (.env)
 ```js
@@ -230,8 +229,8 @@ SECRET=secret
 Este sistema implementa un flujo completo de autenticación de usuarios y gestión de productos.
 
 Aplica buenas prácticas como:
-. Separación de responsabilidades (frontend / backend).
-. Uso de ORM (Sequelize) para independencia de la base de datos.
-. Persistencia de sesión en el cliente.
-. Validación y manejo de errores controlado.
-. Es una base sólida para ampliar hacia proyectos más complejos (roles, dashboard, reportes, etc.).
+- Separación de responsabilidades (frontend / backend).
+- Uso de ORM (Sequelize) para independencia de la base de datos.
+- Persistencia de sesión en el cliente.
+- Validación y manejo de errores controlado.
+- Es una base sólida para ampliar hacia proyectos más complejos (roles, dashboard, reportes, etc.).
