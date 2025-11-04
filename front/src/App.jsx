@@ -15,17 +15,18 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/*RUTAS PÚBLICAS (Login / Registro) */}
-        <Route element={<Public />} path="/">
+        {/*RUTAS PÚBLICAS */}
+        <Route path="/" element={<ProductList />} />
+        {/* Login / Register */}
+        <Route element={<Public />} path="/login">
           <Route index element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
 
-        {/*RUTAS PRIVADAS (requieren login) */}
-        <Route element={<Private />} path="/private">
-          <Route index element={<ProductList />} />
-          <Route path="product" element={<ProductForm />} />
-          <Route path="product/:id" element={<ProductForm />} />
+        {/*RUTAS PRIVADAS (requieren login)*/}
+        <Route element={<Private />} path="/product">
+          <Route path="new" element={<ProductForm />} />
+          <Route path="edit/:id" element={<ProductForm />} />
         </Route>
 
         {/*404 */}

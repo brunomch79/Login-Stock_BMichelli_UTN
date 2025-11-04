@@ -2,14 +2,15 @@ import { useState } from 'react'
 import { Form } from './Form'
 import { Input } from '../common/Input'
 import { Button } from "../common/Button"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify"
 
 const Legend = () => {
-    return <p>¿Ya tienes una cuenta? <Link to="/" className='text-sky-800'>Inicia Sesion</Link></p>
+    return <p className="text-gray-600">¿Ya tienes una cuenta? <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium">Inicia Sesión</Link></p>
 }
 
 const Register = () => {
+    const navigate = useNavigate()
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -38,11 +39,13 @@ const Register = () => {
                 toast.error(res.msg)
                 return
             }
-        toast.success(res.msg)
-        setFullName("")
-        setEmail("")
-        setPassword("")
-        setConfirmPassword("")
+            toast.success(res.msg)
+            setFullName("")
+            setEmail("")
+            setPassword("")
+            setConfirmPassword("")
+            // Redirect to login page after successful registration
+            setTimeout(() => navigate('/login'), 1000)
         } catch {
         }
         finally {

@@ -5,7 +5,7 @@ export const Button = ({
 }) => {
     return (
         <button
-            className='p-2 rounded-2xl mt-2 shadow text-white font-bold cursor-pointer transition-all hover:bg-[#B30000]'
+            className='w-full p-3 rounded-md mt-2 shadow-md bg-blue-600 text-white font-semibold cursor-pointer transition-all hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
             type={type} onClick={onClick}>{value}</button>)
 }
 

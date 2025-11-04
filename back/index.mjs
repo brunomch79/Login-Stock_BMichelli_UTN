@@ -7,7 +7,7 @@ import { productRoutes } from "./routes/product.mjs"
 
 dotenv.config()
 const app = express()
-const PORT = process.env.PORT ?? 3000
+const PORT = process.env.PORT ?? 7001
 
 // Middleware
 app.use(cors())

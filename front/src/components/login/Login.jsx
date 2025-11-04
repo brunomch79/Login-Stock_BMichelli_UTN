@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Form } from './Form'
 import { Input } from "../common/Input"
 import { Button } from "../common/Button"
@@ -7,10 +7,11 @@ import { toast } from 'react-toastify'
 import { useStore } from '../../store/useStore'
 
 const Legend = () => {
-    return <p>¿No tienes una cuenta? <Link to="/register" className="text-sky-800" >Regístrate</Link></p>
+    return <p className="text-gray-600">¿No tienes una cuenta? <Link to="/login/register" className="text-blue-600 hover:text-blue-700 font-medium" >Regístrate</Link></p>
 }
 
 const Login = () => {
+    const navigate = useNavigate()
     const { setUser } = useStore()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -38,11 +39,13 @@ const Login = () => {
             }
             setUser(res.user)
             toast.success("Sesion iniciada")
+            // Redirect to home page after successful login
+            setTimeout(() => navigate('/'), 1000)
         } catch {
         }
     }
     return (
-        <Form title="Inciar Sesion" Legend={Legend} onSubmit={handleSubmit}>
+        <Form title="Iniciar Sesión" Legend={Legend} onSubmit={handleSubmit}>
             <Input
                 type="email"
                 id="email"
@@ -61,7 +64,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => { setPassword(e.target.value) }}
             />
-            <Button type='submit' value="Inciar Sesion" />
+            <Button type='submit' value="Iniciar Sesión" />
         </Form>
     )
 }

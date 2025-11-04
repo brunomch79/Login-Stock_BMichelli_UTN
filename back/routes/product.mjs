@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { Product } from "../models/product.mjs"
+import { authMiddleware } from "../middleware/auth.mjs"
 
 export const productRoutes = Router()
 
@@ -13,8 +14,8 @@ productRoutes.get("/", async (req, res) => {
     }
 })
 
-//Crear un producto
-productRoutes.post("/", async (req, res) => {
+//Crear un producto (PROTEGIDO)
+productRoutes.post("/", authMiddleware, async (req, res) => {
     try {
         const { name, price, stock } = req.body
         if ([name, price, stock].some(v => v === "" || v == null)) {
@@ -42,8 +43,8 @@ productRoutes.get("/:id", async (req, res) => {
     }
 })
 
-//Actualizar un producto
-productRoutes.put("/:id", async (req, res) => {
+//Actualizar un producto (PROTEGIDO)
+productRoutes.put("/:id", authMiddleware, async (req, res) => {
     try {
         const product = await Product.findByPk(req.params.id);
         if (!product) return res.status(404).json({ error: true, msg: "Producto no encontrado" })
@@ -55,8 +56,8 @@ productRoutes.put("/:id", async (req, res) => {
     }
 })
 
-//Eliminar un producto
-productRoutes.delete("/:id", async (req, res) => {
+//Eliminar un producto (PROTEGIDO)
+productRoutes.delete("/:id", authMiddleware, async (req, res) => {
     try {
         const product = await Product.findByPk(req.params.id)
         if (!product) return res.status(404).json({ error: true, msg: "Producto no encontrado" })

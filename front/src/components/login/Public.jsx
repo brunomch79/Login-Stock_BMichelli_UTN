@@ -1,39 +1,38 @@
-import { Outlet, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { useStore } from '../../store/useStore'
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useStore } from "../../store/useStore";
 
 const Public = () => {
-    const { user, setUser } = useStore()
-    const navigate = useNavigate()
+    const { user, setUser } = useStore();
+    const navigate = useNavigate();
     useEffect(() => {
         async function verifyUser() {
-            const url = `${import.meta.env.VITE_API_URL}/user/verify-token`
+            if (!user.token) {
+                return;
+            }
+            const url = `${import.meta.env.VITE_API_URL}/user/verify-token`;
             const config = {
                 method: "GET",
                 headers: {
-                    'content-type': "application/json",
-                    'authorization': user.token
-                }
-            }
-            const req = await fetch(url, config)
-            const res = await req.json()
+                    "content-type": "application/json",
+                    authorization: user.token,
+                },
+            };
+            const req = await fetch(url, config);
+            const res = await req.json();
             if (res.error) {
                 setUser({
                     full_name: null,
                     token: null,
-                    email: null
-                })
-            return
+                    email: null,
+                });
+                return;
             }
-            navigate("/private")
+            navigate("/");
         }
-        verifyUser()
-    }, [user])
-    return (
-        <div className="mx-auto flex flex-col items-center justify-center min-h-screen bg-linear-to-b from-[#B30000] to bg-slate-950">
-            <Outlet />
-        </div>
-    )
-}
+        verifyUser();
+    }, [user]);
+    return <Outlet />;
+};
 
-export default Public
+export default Public;
