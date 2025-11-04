@@ -44,7 +44,6 @@ const Register = () => {
             setEmail("")
             setPassword("")
             setConfirmPassword("")
-            // Redirect to login page after successful registration
             setTimeout(() => navigate('/login'), 1000)
         } catch {
         }

@@ -15,7 +15,6 @@ const Login = () => {
     const { setUser } = useStore()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [loading, setLoading] = useState(false)
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -39,7 +38,6 @@ const Login = () => {
             }
             setUser(res.user)
             toast.success("Sesion iniciada")
-            // Redirect to home page after successful login
             setTimeout(() => navigate('/'), 1000)
         } catch {
         }
