@@ -100,7 +100,9 @@ export const ProductForm = () => {
                 return
             }
             toast.success(res.msg)
-            setTimeout(() => navigate('/'), 700)
+            setName("")
+            setPrice("")
+            setStock("")
         } catch (er) {
             console.log(er)
             toast.error("Ha ocurrido un error")
