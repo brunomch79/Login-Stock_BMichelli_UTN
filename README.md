@@ -35,7 +35,6 @@ El servidor escucha peticiones HTTP y responde con datos en formato **JSON**.
 Crea un nuevo usuario en la base de datos.
 
 **Entradas (JSON body):**
-```json
 {
   "fullName": "Juan Pérez",
   "email": "juan@mail.com",
