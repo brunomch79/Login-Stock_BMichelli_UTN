@@ -205,18 +205,19 @@ Funciones principales:
 
 ## Variables de Entorno (.env)
 ```js
-PORT=3000
+NAME_DB=login-stock
+USER_DB=root
+PASS_DB=1111111
 HOST_DB=localhost
 PORT_DB=3306
-USER_DB=root
-PASS_DB=
-NAME_DB=login_stock
 DIALECT_DB=mysql
-SECRET=mitoken123
+SECRET=secret
 ```
 
 ## Códigos de Éxito y Error
+
 | Código | Tipo | Descripción |
+|----------|----------|------------|
 | 200 | OK	| Operación completada correctamente. |
 | 201 |	Created | Registro creado exitosamente. |
 | 400 |	Bad Request	| Error en los datos enviados. |
