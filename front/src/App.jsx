@@ -33,7 +33,13 @@ function App() {
         <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
       </Routes>
 
-      <ToastContainer theme="colored" />
+      <ToastContainer 
+        theme="colored" 
+        position="bottom-right"
+        autoClose={3000}
+        closeOnClick
+        pauseOnHover
+      />
     </BrowserRouter>
   )
 }
