@@ -35,31 +35,27 @@ El servidor escucha peticiones HTTP y responde con datos en formato **JSON**.
 Crea un nuevo usuario en la base de datos.
 
 **Entradas (JSON body):**
+```js
 {
   "fullName": "Juan Pérez",
   "email": "juan@mail.com",
   "password": "12345",
   "confirmPassword": "12345"
 }
+```
 Validaciones:
-
 password y confirmPassword deben coincidir.
-
 email debe ser único en la base de datos.
 
-Salidas:
+Salidas: ✅ 200 OK
 
-✅ 200 OK
-
-json
+```js
 { "msg": "Usuario registrado correctamente" }
 ❌ 400 Bad Request
 
-json
 { "error": true, "msg": "Las contraseñas no coinciden" }
 ❌ 409 Conflict
 
-json
 { "error": true, "msg": "El email ya está registrado" }
 2. POST /user/login
 Descripción:
@@ -67,24 +63,19 @@ Verifica las credenciales del usuario y devuelve sus datos junto a un token de a
 
 Entradas (JSON body):
 
-json
 {
   "email": "juan@mail.com",
   "password": "12345"
 }
+```
 Proceso interno:
-
 Busca al usuario en la base de datos.
-
 Compara la contraseña con el hash guardado (bcrypt).
-
 Genera un token JWT si es válido.
 
-Salidas:
+Salidas: ✅ 200 OK
 
-✅ 200 OK
-
-json
+```js
 {
   "msg": "Login exitoso",
   "user": { "id": 1, "email": "juan@mail.com", "fullName": "Juan Pérez" },
@@ -98,23 +89,23 @@ json
 
 json
 { "error": true, "msg": "Contraseña incorrecta" }
+```
 
-Endpoints de Productos (/product)
+Endpoints de Productos ```js(/product)```
 Estos endpoints solo deberían usarse tras autenticación.
 
-1. GET /product
+### 1. GET /product
 Descripción:
 Obtiene todos los productos registrados.
 
-Salida:
+Salida: ✅ 200 OK
 
-✅ 200 OK
-
-json
+```js
 [
   { "id": 1, "name": "Monitor", "price": 500, "stock": 10 },
   { "id": 2, "name": "Teclado", "price": 150, "stock": 30 }
 ]
+
 2. POST /product
 Descripción:
 Crea un nuevo producto.
@@ -127,16 +118,14 @@ json
   "price": 100,
   "stock": 50
 }
-Salidas:
 
-✅ 201 Created
+Salidas: ✅ 201 Created
 
-json
 { "msg": "Producto creado correctamente" }
 ❌ 400 Bad Request
 
-json
 { "error": true, "msg": "Faltan campos requeridos" }
+
 3. PUT /product/:id
 Descripción:
 Modifica los datos de un producto existente.
