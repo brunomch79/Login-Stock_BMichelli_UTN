@@ -1,255 +1,263 @@
-Proyecto: Sistema de Login y Gestión de Stock
-
-# 1. Descripción general
-
-El presente proyecto consiste en una **aplicación web full stack** que permite a los usuarios **registrarse, iniciar sesión y gestionar un stock de productos**.  
-El sistema está compuesto por:
-
-- **Backend (API REST)** desarrollado con **Node.js**, **Express** y **Sequelize**.
-- **Frontend** creado con **React**, **Zustand** y **Tailwind CSS**.
-
-El objetivo principal es brindar una base sólida para la gestión de usuarios y productos mediante autenticación y operaciones CRUD.
+# Documentación Técnica – Sistema Login y Gestión de Stock
 
 
-# 2. Tecnologías utilizadas
+## Descripción General
 
-| Área | Herramienta | Descripción |
-|------|--------------|-------------|
-| Lenguaje principal | **JavaScript** | Usado en frontend y backend. |
-| Backend | **Node.js** | Entorno de ejecución del servidor. |
-| Framework | **Express** | Framework para crear la API REST. |
-| ORM | **Sequelize** | Conexión y manipulación de la base de datos MySQL. |
-| Base de datos | **MySQL** | Sistema de base de datos relacional. |
-| Frontend | **React** | Biblioteca para construir interfaces interactivas. |
-| Estado global | **Zustand** | Manejo del estado del usuario. |
-| Estilos | **Tailwind CSS** | Framework CSS para estilos modernos. |
-| Seguridad | **bcrypt**, **jsonwebtoken** | Encriptación de contraseñas y manejo de tokens JWT. |
-| Variables de entorno | **dotenv** | Configuración de claves y puertos. |
+El proyecto **Login-Stock** es una aplicación web full stack que permite:
+- Registrar e iniciar sesión de usuarios.
+- Gestionar productos (alta, baja, modificación y consulta).
+- Mantener autenticación persistente en el cliente.
+
+Está dividido en dos partes:
+- **Backend:** API REST creada con **Node.js**, **Express** y **Sequelize**.
+- **Frontend:** Interfaz construida con **React**, **Zustand** y **TailwindCSS**.
 
 
-# Arquitectura del proyecto
+## Backend (API REST con Node.js y Express)
 
-Login-Stock/
-├── back/ → Servidor (Node + Express)
-│ ├── config/ → Configuración de la base de datos
-│ ├── models/ → Modelos Sequelize (User, Product)
-│ ├── routes/ → Rutas de usuario y productos
-│ └── index.mjs → Punto de entrada del backend
-│
-├── front/ → Interfaz (React + Zustand)
-│ ├── src/
-│ │ ├── components/ → Componentes visuales
-│ │ ├── store/ → Estado global (useStore)
-│ │ └── pages/ → Login, Registro y Stock
-│ └── vite.config.js → Configuración de Vite
-│
-└── .env → Variables de entorno (DB, puertos, claves)
+### Estructura General
+
+| Carpeta | Contenido |
+|----------|------------|
+| `/config` | Configuración de conexión a base de datos. |
+| `/models` | Definición de entidades Sequelize (`User`, `Product`). |
+| `/routes` | Rutas principales (`/user`, `/product`). |
+| `index.mjs` | Punto de entrada del servidor y configuración global. |
+
+El servidor escucha peticiones HTTP y responde con datos en formato **JSON**.
 
 
-# 4. Funcionamiento general
+## Endpoints de Usuario (`/user`)
 
-1. El **usuario** se registra en el sistema.
-2. El **backend** recibe los datos, los valida y los guarda en la base de datos.
-3. El usuario puede **iniciar sesión**, y el servidor genera un **token JWT**.
-4. El **frontend** guarda el usuario autenticado usando **Zustand**.
-5. El usuario puede acceder al **panel de stock** y realizar operaciones **CRUD**.
-6. Las acciones se comunican con el backend mediante **peticiones HTTP (fetch)**.
+### 1. **POST** `/user/register`
 
+**Descripción:**  
+Crea un nuevo usuario en la base de datos.
 
-# 5. Backend (Node.js + Express + Sequelize)
-
-`index.mjs`
-Punto de entrada del servidor:
-
-```js
-import express from "express"
-import cors from "cors"
-import dotenv from "dotenv"
-import { sequelize } from "./config/db.mjs"
-import { userRoutes } from "./routes/user.mjs"
-import { productRoutes } from "./routes/product.mjs"
-
-dotenv.config()
-const app = express()
-const PORT = process.env.PORT ?? 3000
-
-app.use(cors())
-app.use(express.json())
-
-app.use("/user", userRoutes)
-app.use("/product", productRoutes)
-
-app.listen(PORT, async () => {
-  try {
-    await sequelize.sync()
-    console.log("Base de datos conectada")
-    console.log(`Servidor corriendo en http://localhost:${PORT}`)
-  } catch (err) {
-    console.error("Error al conectar la base de datos:", err.message)
-  }
-})
-
-···config/db.mjs···
-Configuración de conexión con la base de datos MySQL:
-import { Sequelize } from "sequelize"
-
-export const sequelize = new Sequelize(
-  process.env.NAME_DB,
-  process.env.USER_DB,
-  process.env.PASS_DB,
-  {
-    host: process.env.HOST_DB,
-    port: process.env.PORT_DB,
-    dialect: process.env.DIALECT_DB
-  }
-)
-
-···Modelo User···
-import { DataTypes } from "sequelize"
-import { sequelize } from "../config/db.mjs"
-
-export const User = sequelize.define("users", {
-  fullName: { type: DataTypes.STRING, allowNull: false },
-  email: { type: DataTypes.STRING, allowNull: false, unique: true },
-  hash: { type: DataTypes.STRING, allowNull: false },
-  isActivate: { type: DataTypes.BOOLEAN, defaultValue: true },
-})
-
-···Modelo Product···
-import { DataTypes } from "sequelize"
-import { sequelize } from "../config/db.mjs"
-
-export const Product = sequelize.define("products", {
-  name: { type: DataTypes.STRING, allowNull: false },
-  price: { type: DataTypes.FLOAT, allowNull: false },
-  stock: { type: DataTypes.INTEGER, allowNull: false }
-})
-
-···Rutas / user···
-import express from "express"
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
-import { User } from "../models/user.mjs"
-
-export const userRoutes = express.Router()
-
-userRoutes.post("/register", async (req, res) => {
-  const { fullName, email, password, confirmPassword } = req.body
-  if (password !== confirmPassword)
-    return res.json({ error: true, msg: "Las contraseñas no coinciden" })
-  const hash = await bcrypt.hash(password, 10)
-  await User.create({ fullName, email, hash })
-  res.json({ msg: "Usuario registrado correctamente" })
-})
-
-userRoutes.post("/login", async (req, res) => {
-  const { email, password } = req.body
-  const user = await User.findOne({ where: { email } })
-  if (!user) return res.json({ error: true, msg: "Usuario no encontrado" })
-  const valid = await bcrypt.compare(password, user.hash)
-  if (!valid) return res.json({ error: true, msg: "Contraseña incorrecta" })
-  const token = jwt.sign({ id: user.id }, process.env.SECRET)
-  res.json({ msg: "Login exitoso", user, token })
-})
-
-···Rutas / product···
-Permiten crear, leer, actualizar y eliminar productos (CRUD).
-Cada endpoint recibe y devuelve JSON, interactuando directamente con Sequelize.
-
-6. Frontend (React + Zustand)
-Estructura
-src/
-├── components/
-│   ├── common/        → Input, Button, Form
-│   ├── login/         → Login.jsx, Register.jsx
-│   └── stock/         → CRUD de productos
-├── store/
-│   └── useStore.js
-└── main.jsx
-
-···Estado global con Zustand···
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-
-export const useStore = create(persist(
-  (set) => ({
-    user: { full_name: null, email: null, token: null },
-    setUser: (newuser) => set({ user: newuser })
-  }),
-  { name: "token_login_web" }
-))
-
-Explicación:
-Guarda el usuario logueado.
-Usa persist para mantener la sesión incluso si se recarga la página.
-
-···Login.jsx···
-Formulario para iniciar sesión:
-
-const handleSubmit = async (e) => {
-  e.preventDefault()
-  const body = { email, password }
-  const url = `${import.meta.env.VITE_API_URL}/user/login`
-  const req = await fetch(url, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(body)
-  })
-  const res = await req.json()
-  if (res.error) return toast.error(res.msg)
-  setUser(res.user)
-  toast.success("Sesión iniciada correctamente")
+**Entradas (JSON body):**
+```json
+{
+  "fullName": "Juan Pérez",
+  "email": "juan@mail.com",
+  "password": "12345",
+  "confirmPassword": "12345"
 }
+Validaciones:
 
-···Register.jsx···
-Formulario de registro de usuarios:
+password y confirmPassword deben coincidir.
 
-const handleSubmit = async (e) => {
-  e.preventDefault()
-  const body = { fullName, email, password, confirmPassword }
-  const url = `${import.meta.env.VITE_API_URL}/user/register`
-  const req = await fetch(url, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(body)
-  })
-  const res = await req.json()
-  if (res.error) return toast.error(res.msg)
-  toast.success(res.msg)
+email debe ser único en la base de datos.
+
+Salidas:
+
+✅ 200 OK
+
+json
+{ "msg": "Usuario registrado correctamente" }
+❌ 400 Bad Request
+
+json
+{ "error": true, "msg": "Las contraseñas no coinciden" }
+❌ 409 Conflict
+
+json
+{ "error": true, "msg": "El email ya está registrado" }
+2. POST /user/login
+Descripción:
+Verifica las credenciales del usuario y devuelve sus datos junto a un token de autenticación.
+
+Entradas (JSON body):
+
+json
+{
+  "email": "juan@mail.com",
+  "password": "12345"
 }
+Proceso interno:
 
-# 7. Flujo del sistema
-Registro: el usuario se da de alta en /user/register.
+Busca al usuario en la base de datos.
 
-Login: envía email y contraseña a /user/login.
+Compara la contraseña con el hash guardado (bcrypt).
 
-Validación: el servidor verifica credenciales y devuelve un token.
+Genera un token JWT si es válido.
 
-Persistencia: el frontend guarda el usuario con Zustand.
+Salidas:
 
-Stock: el usuario puede crear, editar y eliminar productos desde el panel.
+✅ 200 OK
 
-# 8. Seguridad
-Contraseñas encriptadas con bcrypt.
+json
+{
+  "msg": "Login exitoso",
+  "user": { "id": 1, "email": "juan@mail.com", "fullName": "Juan Pérez" },
+  "token": "eyJhbGciOi..."
+}
+❌ 404 Not Found
 
-Generación de tokens JWT.
+json
+{ "error": true, "msg": "Usuario no encontrado" }
+❌ 401 Unauthorized
 
-Variables sensibles protegidas con .env.
+json
+{ "error": true, "msg": "Contraseña incorrecta" }
 
-Middleware CORS activado.
+Endpoints de Productos (/product)
+Estos endpoints solo deberían usarse tras autenticación.
 
-⚙️ 9. Variables de entorno (.env)
+1. GET /product
+Descripción:
+Obtiene todos los productos registrados.
+
+Salida:
+
+✅ 200 OK
+
+json
+[
+  { "id": 1, "name": "Monitor", "price": 500, "stock": 10 },
+  { "id": 2, "name": "Teclado", "price": 150, "stock": 30 }
+]
+2. POST /product
+Descripción:
+Crea un nuevo producto.
+
+Entradas (JSON body):
+
+json
+{
+  "name": "Mouse Gamer",
+  "price": 100,
+  "stock": 50
+}
+Salidas:
+
+✅ 201 Created
+
+json
+{ "msg": "Producto creado correctamente" }
+❌ 400 Bad Request
+
+json
+{ "error": true, "msg": "Faltan campos requeridos" }
+3. PUT /product/:id
+Descripción:
+Modifica los datos de un producto existente.
+
+Entradas (JSON body):
+
+json
+{
+  "name": "Mouse RGB",
+  "price": 120,
+  "stock": 60
+}
+Salidas:
+
+✅ 200 OK
+
+json
+{ "msg": "Producto actualizado correctamente" }
+❌ 404 Not Found
+
+json
+{ "error": true, "msg": "Producto no encontrado" }
+4. DELETE /product/:id
+Descripción:
+Elimina un producto de la base de datos.
+
+Salidas:
+
+✅ 200 OK
+
+json
+{ "msg": "Producto eliminado" }
+❌ 404 Not Found
+
+json
+{ "error": true, "msg": "Producto no encontrado" }
+🧠 Lógica General del Backend
+Función	Descripción
+sequelize.sync()	Sincroniza modelos con la base de datos MySQL.
+bcrypt.hash()	Encripta contraseñas antes de almacenarlas.
+bcrypt.compare()	Compara contraseñas durante el login.
+jwt.sign()	Genera tokens de sesión seguros.
+dotenv.config()	Carga variables de entorno desde .env.
+
+💻 Frontend (React + Zustand)
+🔄 Flujo General
+El usuario completa el formulario de Registro o Login.
+
+El componente envía la información mediante fetch al backend.
+
+Si la respuesta es exitosa, se muestra un mensaje con react-toastify.
+
+En el login, los datos del usuario se guardan en el estado global con Zustand.
+
+La sesión persiste aunque se recargue la página.
+
+🧱 Componentes principales
+Componente	Función
+Login.jsx	Formulario de inicio de sesión.
+Register.jsx	Formulario de registro de usuario.
+Form.jsx	Contenedor reutilizable de formularios.
+Input.jsx	Campo de entrada reutilizable.
+Button.jsx	Botón genérico reutilizable.
+useStore.js	Estado global persistente para usuario autenticado.
+
+🧩 Estado Global (Zustand)
+Objetivo: Mantener los datos del usuario logueado en toda la aplicación.
+
+Estructura del estado:
+
+json
+{
+  "user": {
+    "full_name": null,
+    "email": null,
+    "token": null
+  }
+}
+Funciones principales:
+
+setUser(newUser) → Actualiza el usuario en sesión.
+
+Persistencia automática en localStorage bajo el nombre "token_login_web".
+
+Variables de Entorno (.env)
 env
 Copiar código
+# Servidor
 PORT=3000
+
+# Base de Datos
 HOST_DB=localhost
 PORT_DB=3306
 USER_DB=root
 PASS_DB=
 NAME_DB=login_stock
 DIALECT_DB=mysql
-SECRET=midetokensecreto
-🧠 10. Conclusión
-El proyecto implementa una arquitectura cliente-servidor moderna, con separación de responsabilidades, autenticación segura y persistencia de datos.
-Sirve como ejemplo funcional de una aplicación full stack JavaScript, aplicando buenas prácticas de desarrollo web.
 
+# Seguridad
+SECRET=mitoken123
+🔐 Códigos de Éxito y Error
+Código	Tipo	Descripción
+200	OK	Operación completada correctamente.
+201	Created	Registro creado exitosamente.
+400	Bad Request	Error en los datos enviados.
+401	Unauthorized	Credenciales inválidas.
+404	Not Found	Recurso no encontrado.
+409	Conflict	Conflicto con un registro existente.
+500	Server Error	Error interno del servidor.
+
+Conclusión
+Este sistema implementa un flujo completo de autenticación de usuarios y gestión de productos.
+Aplica buenas prácticas como:
+
+Separación de responsabilidades (frontend / backend).
+
+Uso de ORM (Sequelize) para independencia de la base de datos.
+
+Persistencia de sesión en el cliente.
+
+Validación y manejo de errores controlado.
+
+Es una base sólida para ampliar hacia proyectos más complejos (roles, dashboard, reportes, etc.).
