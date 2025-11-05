@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
 
 //LOGIN / AUTH
-import Public from "./components/login/Public"
-import Private from "./components/login/Private"
+import Public from "./components/Layout/Public"
+import Private from "./components/Layout/Private"
 import Login from "./components/login/Login"
 import Register from "./components/login/Register"
 
