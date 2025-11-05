@@ -18,9 +18,9 @@ userRoutes.post("/register", async (req, res) => {
     try {
         const { fullName, email, password, confirmPassword } = body
         if (password !== confirmPassword) {
-            res.status(403).json({
+            res.status(409).json({
             error: true,
-            msg: "Las contrasenias no coinciden"
+            msg: "Las contraseñas no coinciden"
             })
             return
         }
@@ -64,7 +64,7 @@ userRoutes.post("/login", async (req, res) => {
     }
     const checkPasswd = await bcrypt.compare(password, user.hash)
     if (!checkPasswd) {
-        res.status(403).json({
+        res.status(400).json({
             error: true,
             msg: "Password incorrecto"
         })

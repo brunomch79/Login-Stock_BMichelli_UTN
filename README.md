@@ -20,6 +20,7 @@ Está dividido en dos partes:
 | Carpeta | Contenido |
 |----------|------------|
 | `/config` | Configuración de conexión a base de datos. |
+| `/middleware` | Protección de rutas |
 | `/models` | Definición de entidades Sequelize (`User`, `Product`). |
 | `/routes` | Rutas principales (`/user`, `/product`). |
 | `index.mjs` | Punto de entrada del servidor y configuración global. |
@@ -51,7 +52,7 @@ Salidas:
 { "msg": "Usuario registrado correctamente" }
 
 ❌ 400 Bad Request
-{ "error": true, "msg": "Las contraseñas no coinciden" }
+{ "error": true, "msg": "Error en la solicitud" }
 
 ❌ 409 Conflict
 { "error": true, "msg": "El email ya está registrado" }
@@ -84,7 +85,7 @@ Salidas:
 ❌ 404 Not Found
 { "error": true, "msg": "Usuario no encontrado" }
 
-❌ 401 Unauthorized
+❌ 400 Bad request
 { "error": true, "msg": "Contraseña incorrecta" }
 ```
 
@@ -224,13 +225,3 @@ SECRET=secret
 | 404 |	Not Found | Recurso no encontrado. |
 | 409 |	Conflict | Conflicto con un registro existente. |
 | 500 |	Server Error | Error interno del servidor. |
-
-## Conclusión
-Este sistema implementa un flujo completo de autenticación de usuarios y gestión de productos.
-
-Aplica buenas prácticas como:
-- Separación de responsabilidades (frontend / backend).
-- Uso de ORM (Sequelize) para independencia de la base de datos.
-- Persistencia de sesión en el cliente.
-- Validación y manejo de errores controlado.
-- Es una base sólida para ampliar hacia proyectos más complejos (roles, dashboard, reportes, etc.).
