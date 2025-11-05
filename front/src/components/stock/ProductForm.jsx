@@ -32,7 +32,6 @@ export const ProductForm = () => {
                     toast.error(`${res.msg}`)
                     return
                 }
-                console.log(res.product)
                 setName(res.product.name)
                 setPrice(res.product.price)
                 setStock(res.product.stock)
@@ -68,7 +67,6 @@ export const ProductForm = () => {
             toast.success(res.msg)
             setTimeout(() => navigate('/'), 700)
         } catch (er) {
-            console.log(er)
             toast.error("Ha ocurrido un error")
         }
     }
@@ -104,7 +102,6 @@ export const ProductForm = () => {
             setPrice("")
             setStock("")
         } catch (er) {
-            console.log(er)
             toast.error("Ha ocurrido un error")
         }
     }
